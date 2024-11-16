@@ -1,24 +1,40 @@
-使用HTML，生成组合各种的prompt，结合创意，想法，排列组合
+# Creative Prompt Collection
 
-这里是20个加入了不同姿势描述的提示词变体：
+A curated collection of prompts for generating various scenes, characters, and environments in HTML format.
 
-[基础提示词], sitting elegantly with hands folded in lap
-[基础提示词], standing gracefully with one arm raised holding a paper fan
-[基础提示词], dancing pose with flowing sleeves
-[基础提示词], kneeling position while pouring tea
-[基础提示词], gentle walking pose with head slightly turned
-[基础提示词], playing a traditional guzheng instrument
-[基础提示词], holding a lotus flower with both hands
-[基础提示词], reading a scroll with contemplative expression
-[基础提示词], arranging flowers in a vase
-[基础提示词], gazing at distant mountains
-[基础提示词], writing calligraphy with graceful hand position
-[基础提示词], holding a circular fan in dancing pose
-[基础提示词], picking flowers in garden
-[基础提示词], playing a flute while seated
-[基础提示词], admiring plum blossoms
-[基础提示词], seated by a window with moonlight
-[基础提示词], holding prayer beads in meditation
-[基础提示词], preparing incense ceremony
-[基础提示词], adjusting hair ornament in mirror
-[基础提示词], playing with butterfly sleeves in breeze
+## Categories
+
+### Anthropomorphic Characters
+- Animal-headed figures in urban settings (e.g., Lion in Singapore, Falcon in Cairo)
+- Cultural fusion characters (e.g., Japanese rooster/hen in Shibuya)
+
+### Portrait Scenes
+- Indoor elegant poses
+- Urban fashion photography
+- Traditional cultural settings
+
+### Architecture & Environments
+- Modern cityscapes
+- Traditional gardens
+- Futuristic interiors
+- Luxury residences
+
+### Furniture & Interior Design
+- Modern living spaces
+- Traditional room layouts
+- Garden furniture arrangements
+- Lighting scenarios
+
+## Usage
+Each HTML file contains detailed prompts with:
+- Character/scene descriptions
+- Clothing and accessory details
+- Environmental elements
+- Lighting and atmosphere specifications
+- Style references
+
+## Contributing
+Feel free to submit pull requests with new prompts. Please follow the formatting template provided in CONTRIBUTING.md.
+
+## License
+MIT License
