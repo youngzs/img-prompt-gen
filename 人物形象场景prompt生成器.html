@@ -1,0 +1,289 @@
+<!DOCTYPE html><html lang="zh"><head><meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com https://d3js.org https://threejs.org https://cdn.plot.ly https://stackpath.bootstrapcdn.com https://maps.googleapis.com https://cdn.tailwindcss.com https://ajax.googleapis.com https://kit.fontawesome.com https://cdn.datatables.net https://maxcdn.bootstrapcdn.com https://code.highcharts.com https://tako-static-assets-production.s3.amazonaws.com https://www.youtube.com https://fonts.googleapis.com https://fonts.gstatic.com https://pfst.cf2.poecdn.net https://puc.poecdn.net https://i.imgur.com https://wikimedia.org https://*.icons8.com https://*.giphy.com https://picsum.photos https://images.unsplash.com; frame-src 'self' https://www.youtube.com https://trytako.com; child-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests; block-all-mixed-content;">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>人物场景生成器</title>
+    <style>
+        body {
+            font-family: "Microsoft YaHei", sans-serif;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 0 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .control-group {
+            margin: 15px 0;
+        }
+        label {
+            display: inline-block;
+            width: 100px;
+            margin-right: 10px;
+        }
+        select {
+            width: 200px;
+            padding: 5px;
+            border-radius: 4px;
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        .output {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            white-space: pre-wrap;
+        }
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        .tab {
+            padding: 10px 20px;
+            background: #ddd;
+            border: none;
+            cursor: pointer;
+        }
+        .tab.active {
+            background: #4CAF50;
+            color: white;
+        }
+        .slider {
+            width: 200px;
+        }
+        .subcontrols {
+            margin-left: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>人物场景生成器</h1>
+        <div class="tabs">
+            <button class="tab active" onclick="setMode('image')">图片提示词</button>
+            <button class="tab" onclick="setMode('video')">视频提示词</button>
+        </div>
+
+        <div class="control-group">
+            <label>基础风格:</label>
+            <select id="baseStyle">
+                <option value="清纯可爱">清纯可爱</option>
+                <option value="优雅端庄">优雅端庄</option>
+                <option value="性感妩媚">性感妩媚</option>
+                <option value="朦胧诱惑">朦胧诱惑</option>
+                <option value="清冷高贵">清冷高贵</option>
+            </select>
+        </div>
+
+        <div class="control-group">
+            <label>服装类型:</label>
+            <select id="clothing">
+                <option value="汉服">古典汉服</option>
+                <option value="旗袍">优雅旗袍</option>
+                <option value="和服">日式和服</option>
+                <option value="洛丽塔">洛丽塔</option>
+                <option value="礼服">晚礼服</option>
+                <option value="运动装">运动装</option>
+                <option value="泳装">泳装</option>
+                <option value="居家服">居家服</option>
+                <option value="制服">制服</option>
+                <option value="睡衣">睡衣</option>
+                <option value="纱裙">纱裙</option>
+                <option value="吊带裙">吊带裙</option>
+            </select>
+        </div>
+
+        <div class="control-group">
+            <label>服装特点:</label>
+            <select id="clothingStyle">
+                <option value="端庄">端庄典雅</option>
+                <option value="轻薄">轻薄飘逸</option>
+                <option value="贴身">贴身剪裁</option>
+                <option value="蕾丝">蕾丝装饰</option>
+                <option value="透视">透视设计</option>
+                <option value="露背">露背设计</option>
+                <option value="高开叉">高开叉</option>
+                <option value="吊带">细吊带</option>
+                <option value="网纱">网纱层次</option>
+                <option value="丝绸">丝绸材质</option>
+            </select>
+        </div>
+
+        <div class="control-group">
+            <label>场景选择:</label>
+            <select id="scene">
+                <option value="古典庭院">古典庭院</option>
+                <option value="海滩">海滩</option>
+                <option value="都市街头">都市街头</option>
+                <option value="樱花庭园">樱花庭园</option>
+                <option value="咖啡厅">咖啡厅</option>
+                <option value="酒店房间">酒店房间</option>
+                <option value="浴室">浴室</option>
+                <option value="游泳池">游泳池</option>
+                <option value="森林小径">森林小径</option>
+                <option value="瀑布">瀑布</option>
+                <option value="沙漠">沙漠</option>
+                <option value="夜店">夜店</option>
+                <option value="摄影棚">摄影棚</option>
+                <option value="复古民宅">复古民宅</option>
+            </select>
+        </div>
+
+        <div class="control-group">
+            <label>光线氛围:</label>
+            <select id="lighting">
+                <option value="自然日光">自然日光</option>
+                <option value="温暖夕阳">温暖夕阳</option>
+                <option value="柔和月光">柔和月光</option>
+                <option value="霓虹光影">霓虹光影</option>
+                <option value="朦胧光效">朦胧光效</option>
+                <option value="水波光影">水波光影</option>
+                <option value="背光轮廓">背光轮廓</option>
+                <option value="透光剪影">透光剪影</option>
+            </select>
+        </div>
+
+        <div class="control-group">
+            <label>朦胧程度:</label>
+            <select id="haziness">
+                <option value="清晰">完全清晰</option>
+                <option value="轻薄朦胧">轻薄朦胧</option>
+                <option value="半遮半掩">半遮半掩</option>
+                <option value="若隐若现">若隐若现</option>
+                <option value="迷离">迷离恍惚</option>
+            </select>
+        </div>
+
+        <div class="control-group">
+            <label>尺度选择:</label>
+            <select id="intensity">
+                <option value="普通">普通尺度</option>
+                <option value="性感">性感尺度</option>
+                <option value="大胆">大胆尺度</option>
+                <option value="擦边">擦边尺度</option>
+                <option value="暗示">暗示性尺度</option>
+            </select>
+        </div>
+
+        <button onclick="generate()">生成描述</button>
+        <button onclick="generateRandom()">完全随机</button>
+        <div class="output" id="output"></div>
+    </div>
+
+    <script>
+        let currentMode = 'image';
+
+        const details = {
+            发型: ["长直发", "卷发", "短发", "波浪卷", "盘发", "湿发", "凌乱发", "丸子头"],
+            肤色: ["白皙", "健康", "小麦色", "粉嫩", "白里透红", "莹润"],
+            体型: ["纤细", "丰满", "高挑", "娇小", "曼妙", "凹凸有致"],
+            姿势: [
+                "站姿", "坐姿", "靠墙", "回眸", "慵懒躺卧", "侧卧", "趴姿",
+                "跪姿", "舞蹈姿态", "伸展", "拥抱", "弯腰", "仰卧"
+            ],
+            表情: [
+                "妩媚", "温柔", "羞涩", "慵懒", "魅惑", "纯真",
+                "恍惚", "享受", "迷离", "挑逗", "天真", "娇媚"
+            ],
+            妆容: [
+                "淡妆", "温柔妆容", "烟熏妆", "清新裸妆", "复古妆容",
+                "湿润唇妆", "晕染眼妆", "自然妆", "性感妆容"
+            ],
+            饰品: [
+                "颈链", "耳环", "手链", "发饰", "丝带", "蕾丝手套",
+                "网袜", "choker", "脚链", "头纱"
+            ]
+        };
+
+        const atmospheres = [
+            "梦幻", "唯美", "浪漫", "性感", "清纯", "诱惑",
+            "暧昧", "魅惑", "神秘", "优雅", "朦胧", "迷离"
+        ];
+
+        const effects = [
+            "水滴效果", "雾气弥漫", "透视效果", "柔焦", "光斑",
+            "剪影", "逆光", "水波纹", "玻璃反射", "毛玻璃效果"
+        ];
+
+        function setMode(mode) {
+            currentMode = mode;
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        function randomChoice(arr) {
+            return arr[Math.floor(Math.random() * arr.length)];
+        }
+
+        function generate() {
+            const baseStyle = document.getElementById('baseStyle').value;
+            const clothing = document.getElementById('clothing').value;
+            const clothingStyle = document.getElementById('clothingStyle').value;
+            const scene = document.getElementById('scene').value;
+            const lighting = document.getElementById('lighting').value;
+            const haziness = document.getElementById('haziness').value;
+            const intensity = document.getElementById('intensity').value;
+
+            // 随机选择细节
+            const selectedDetails = {
+                发型: randomChoice(details.发型),
+                肤色: randomChoice(details.肤色),
+                体型: randomChoice(details.体型),
+                姿势: randomChoice(details.姿势),
+                表情: randomChoice(details.表情),
+                妆容: randomChoice(details.妆容),
+                饰品: randomChoice(details.饰品)
+            };
+
+            let description = `${selectedDetails.体型}的女子，${selectedDetails.发型}，${selectedDetails.肤色}的肤质，`;
+            description += `面带${selectedDetails.表情}表情，${selectedDetails.妆容}，`;
+            description += `身着${clothingStyle}的${clothing}，佩戴${selectedDetails.饰品}，`;
+            description += `以${selectedDetails.姿势}的姿态出现在${scene}中，${lighting}下，${haziness}的效果。`;
+
+            let prompt = '';
+            if (currentMode === 'image') {
+                prompt = `高质量人像摄影，${description}
+整体风格:${baseStyle}，${randomChoice(atmospheres)}氛围
+${intensity}表现，${randomChoice(effects)}
+8k超高清，电影质感，完美构图，专业布光`;
+            } else {
+                prompt = `时尚视频镜头，${description}
+镜头缓慢移动，${baseStyle}风格，${randomChoice(atmospheres)}氛围
+${intensity}表现，${lighting}渲染，${randomChoice(effects)}
+电影级别制作，完美色彩，流畅运镜`;
+            }
+
+            document.getElementById('output').innerHTML = 
+                `场景描述：\n${description}\n\n生成提示词：\n${prompt}`;
+        }
+
+        function generateRandom() {
+            const selects = document.getElementsByTagName('select');
+            for(let select of selects) {
+                const options = select.options;
+                const randomIndex = Math.floor(Math.random() * options.length);
+                select.selectedIndex = randomIndex;
+            }
+            generate();
+        }
+
+        // 初始生成一次
+        generate();
+    </script>
+
+
+</body></html>

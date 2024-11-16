@@ -1,0 +1,151 @@
+<!DOCTYPE html><html><head><meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com https://d3js.org https://threejs.org https://cdn.plot.ly https://stackpath.bootstrapcdn.com https://maps.googleapis.com https://cdn.tailwindcss.com https://ajax.googleapis.com https://kit.fontawesome.com https://cdn.datatables.net https://maxcdn.bootstrapcdn.com https://code.highcharts.com https://tako-static-assets-production.s3.amazonaws.com https://www.youtube.com https://fonts.googleapis.com https://fonts.gstatic.com https://pfst.cf2.poecdn.net https://puc.poecdn.net https://i.imgur.com https://wikimedia.org https://*.icons8.com https://*.giphy.com https://picsum.photos https://images.unsplash.com; frame-src 'self' https://www.youtube.com https://trytako.com; child-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests; block-all-mixed-content;">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: "Times New Roman", serif;
+            background: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .quote-container {
+            text-align: center;
+            margin: 20px 0;
+            opacity: 0;
+            transition: opacity 1s;
+        }
+        .quote {
+            font-size: 24px;
+            line-height: 1.6;
+            color: #555;
+            font-style: italic;
+            margin: 0;
+        }
+        button {
+            background: #a67c52;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #8b6642;
+        }
+        .button-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="quote-container" id="quoteDisplay">
+            <p class="quote"></p>
+        </div>
+        <div class="button-container">
+            <button onclick="generateQuote('interior')">室内空间</button>
+            <button onclick="generateQuote('exterior')">室外庭院</button>
+            <button onclick="generateQuote('bedroom')">卧室氛围</button>
+            <button onclick="generateQuote('nature')">自然风光</button>
+            <button onclick="generateQuote('flowers')">花艺装饰</button>
+            <button onclick="generateQuote('cave')">洞穴风格</button>
+            <button onclick="generateQuote('furniture')">家具搭配</button>
+            <button onclick="generateQuote('random')">随机感悟</button>
+        </div>
+    </div>
+
+    <script>
+        const quotes = {
+            interior: [
+                "白墙上斑驳的光影，讲述着岁月静好的故事。",
+                "朴实的木质餐桌，承载着一家人温暖的时光。",
+                "敞开的窗，让清新的微风与阳光自由穿梭。",
+                "简约的陈设中，处处都是生活的温度。",
+                "厨房里飘散的香气，是最美好的生活气息。"
+            ],
+            exterior: [
+                "藤蔓缠绕的庭院，是时光沉淀的诗篇。",
+                "石阶上跳跃的阳光，编织出美好的午后。",
+                "庭院深处的橄榄树，见证四季更迭。",
+                "白色的围墙配上蔓延的爬山虎，自然与人文的完美融合。",
+                "露台上的早餐时光，总有温柔的风相伴。"
+            ],
+            bedroom: [
+                "柔软的亚麻床品，让每个清晨都充满期待。",
+                "洞穴般的卧室，是最私密的心灵庇护所。",
+                "清晨的第一缕阳光，轻抚着纯白的床单。",
+                "原木与白色的搭配，营造出最纯净的睡眠空间。",
+                "简约的床头柜上，一盏温暖的台灯足以。"
+            ],
+            nature: [
+                "远山如黛，近水生情，自然之美无需装饰。",
+                "树影婆娑，鸟语花香，这里是心灵的栖息地。",
+                "晨露未干，野花绽放，每一天都是新的开始。",
+                "山间的微风，带来泥土的芬芳。",
+                "暮色四合时，聆听大自然的低语。"
+            ],
+            flowers: [
+                "紫色的勿忘我，点缀着纯白的墙面。",
+                "藤蔓上的粉色蔷薇，诉说着春天的故事。",
+                "随意插在陶罐中的野花，自然的美最动人。",
+                "季节更迭，花开花落，生命的轮回如此美好。",
+                "窗台上的绣球花，为生活增添一抹柔美。"
+            ],
+            cave: [
+                "天然的洞穴结构，创造出独特的居住体验。",
+                "粗犷的石壁与精致的家具，形成独特的反差美。",
+                "弧形的天花，让空间充满流动的韵律。",
+                "石墙上的光影变幻，仿佛时光的艺术。",
+                "洞穴中的现代生活，是对传统与创新的完美诠释。"
+            ],
+            furniture: [
+                "手工编织的藤椅，承载着午后的慵懒时光。",
+                "原木餐桌的年轮，记录着岁月的故事。",
+                "简约的亚麻沙发，邀请人们放慢脚步。",
+                "复古的铜制灯具，为空间增添温暖的光晕。",
+                "实木书架上的老物件，每一个都是生活的印记。"
+            ],
+            random: [
+                "生活不在远方，就在眼前这片静谧时光里。",
+                "简单的食材，真诚的料理，平凡中的精致。",
+                "让心安住在当下，感受生活的美好。",
+                "慢下来，才能看见最美的风景。",
+                "生活的真谛，在于发现平凡中的诗意。"
+            ]
+        };
+
+        function generateQuote(category) {
+            const quoteContainer = document.getElementById('quoteDisplay');
+            quoteContainer.style.opacity = 0;
+            
+            setTimeout(() => {
+                const categoryQuotes = quotes[category];
+                const randomQuote = categoryQuotes[Math.floor(Math.random() * categoryQuotes.length)];
+                quoteContainer.querySelector('.quote').textContent = randomQuote;
+                quoteContainer.style.opacity = 1;
+            }, 500);
+        }
+
+        // Generate initial random quote
+        generateQuote('random');
+    </script>
+
+
+</body></html>

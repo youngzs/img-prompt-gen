@@ -1,0 +1,123 @@
+<!DOCTYPE html><html lang="zh"><head><meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com https://d3js.org https://threejs.org https://cdn.plot.ly https://stackpath.bootstrapcdn.com https://maps.googleapis.com https://cdn.tailwindcss.com https://ajax.googleapis.com https://kit.fontawesome.com https://cdn.datatables.net https://maxcdn.bootstrapcdn.com https://code.highcharts.com https://tako-static-assets-production.s3.amazonaws.com https://www.youtube.com https://fonts.googleapis.com https://fonts.gstatic.com https://pfst.cf2.poecdn.net https://puc.poecdn.net https://i.imgur.com https://wikimedia.org https://*.icons8.com https://*.giphy.com https://picsum.photos https://images.unsplash.com; frame-src 'self' https://www.youtube.com https://trytako.com; child-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests; block-all-mixed-content;">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>山海经生物生成器</title>
+    <style>
+        body {
+            font-family: "Microsoft YaHei", sans-serif;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 0 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        .output {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            white-space: pre-wrap;
+        }
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        .tab {
+            padding: 10px 20px;
+            background: #ddd;
+            border: none;
+            cursor: pointer;
+        }
+        .tab.active {
+            background: #4CAF50;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>山海经奇异生物生成器</h1>
+        <div class="tabs">
+            <button class="tab active" onclick="setMode('image')">图片提示词</button>
+            <button class="tab" onclick="setMode('video')">视频提示词</button>
+        </div>
+        <button onclick="generate()">生成新的生物</button>
+        <div class="output" id="output"></div>
+    </div>
+
+    <script>
+        let currentMode = 'image';
+
+        const bodyParts = ["龙", "虎", "鹿", "鱼", "蛇", "鸟", "牛", "羊", "马", "猪"];
+        const heads = ["龙头", "虎头", "鹿头", "鱼头", "蛇头", "鸟头", "牛头", "羊头", "马头", "猪头"];
+        const colors = ["赤红色", "青色", "金色", "银色", "紫色", "黑色", "白色", "斑纹"];
+        const features = ["鳞片", "羽毛", "皮毛", "甲壳"];
+        const abilities = ["喷火", "吐水", "控风", "引雷", "隐形", "变化"];
+        const habitats = ["山峰", "海洋", "森林", "沙漠", "火山", "云端"];
+        const sounds = ["龙吟", "虎啸", "鹿鸣", "鸟啼", "牛哞", "羊咩"];
+        const specialFeatures = ["长有翅膀", "有九条尾巴", "全身发光", "眼睛如明珠", "身体透明"];
+        const sizes = ["巨大无比", "小巧玲珑", "高达千丈", "如同小山"];
+        const actions = ["腾云驾雾", "游走如风", "飞天遁地", "穿梭往来"];
+
+        function setMode(mode) {
+            currentMode = mode;
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        function randomChoice(arr) {
+            return arr[Math.floor(Math.random() * arr.length)];
+        }
+
+        function generate() {
+            const body = randomChoice(bodyParts);
+            const head = randomChoice(heads);
+            const color = randomChoice(colors);
+            const feature = randomChoice(features);
+            const ability = randomChoice(abilities);
+            const habitat = randomChoice(habitats);
+            const sound = randomChoice(sounds);
+            const specialFeature = randomChoice(specialFeatures);
+            const size = randomChoice(sizes);
+            const action = randomChoice(actions);
+
+            let description = `这是一种${size}的奇异生物，它有着${body}的身体和${head}。
+它的身体呈${color}，布满了${feature}。
+这种生物拥有${ability}的神奇能力，常年栖息在${habitat}。
+${specialFeature}，${action}。
+它的叫声听起来像${sound}。`;
+
+            let prompt = '';
+            if (currentMode === 'image') {
+                prompt = `一只神秘的山海经生物，${body}身${head}，${color}的${feature}覆盖全身，${size}，${specialFeature}，栖息在${habitat}中，${action}，中国传统水墨画风格，细节精美，神秘氛围`;
+            } else {
+                prompt = `一段展现山海经神兽的视频，展示了一只${body}身${head}的生物，${color}的${feature}在阳光下闪耀，${action}，${ability}，环境是瑰丽的${habitat}，中国传统风格，仙境般的氛围，动态镜头，光影变幻`;
+            }
+
+            document.getElementById('output').innerHTML = 
+                `生物描述：\n${description}\n\n生成提示词：\n${prompt}`;
+        }
+
+        // 初始生成一次
+        generate();
+    </script>
+
+
+</body></html>
