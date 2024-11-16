@@ -1,0 +1,202 @@
+<!DOCTYPE html><html lang="zh"><head><meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com https://d3js.org https://threejs.org https://cdn.plot.ly https://stackpath.bootstrapcdn.com https://maps.googleapis.com https://cdn.tailwindcss.com https://ajax.googleapis.com https://kit.fontawesome.com https://cdn.datatables.net https://maxcdn.bootstrapcdn.com https://code.highcharts.com https://tako-static-assets-production.s3.amazonaws.com https://www.youtube.com https://fonts.googleapis.com https://fonts.gstatic.com https://pfst.cf2.poecdn.net https://puc.poecdn.net https://i.imgur.com https://wikimedia.org https://*.icons8.com https://*.giphy.com https://picsum.photos https://images.unsplash.com; frame-src 'self' https://www.youtube.com https://trytako.com; child-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests; block-all-mixed-content;">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>青花瓷人物雕塑 Prompt 生成器</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "Microsoft YaHei", sans-serif;
+            line-height: 1.6;
+            padding: 20px;
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #1a237e;
+            margin-bottom: 30px;
+        }
+
+        .section {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #1a237e;
+            font-weight: bold;
+        }
+
+        select, input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .generate-btn {
+            background: #1a237e;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+
+        .generate-btn:hover {
+            background: #0e1642;
+        }
+
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: #f8f9fa;
+            min-height: 100px;
+        }
+
+        .copy-btn {
+            background: #4caf50;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .copy-btn:hover {
+            background: #388e3c;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>青花瓷人物雕塑 Prompt 生成器</h1>
+        
+        <div class="section">
+            <label>姿势类型：</label>
+            <select id="pose">
+                <option value="standing">站姿</option>
+                <option value="sitting">坐姿</option>
+                <option value="dancing">舞蹈姿态</option>
+                <option value="kneeling">跪坐</option>
+            </select>
+
+            <label>动作描述：</label>
+            <select id="action">
+                <option value="contemplative">沉思</option>
+                <option value="playing_instrument">演奏乐器</option>
+                <option value="pouring_tea">沏茶</option>
+                <option value="holding_fan">持扇</option>
+                <option value="writing">书写</option>
+            </select>
+
+            <label>服饰细节：</label>
+            <select id="clothing">
+                <option value="hanfu">传统汉服</option>
+                <option value="imperial">宫廷装束</option>
+                <option value="scholar">文人服饰</option>
+            </select>
+
+            <label>场景氛围：</label>
+            <select id="atmosphere">
+                <option value="elegant">优雅端庄</option>
+                <option value="ethereal">空灵飘逸</option>
+                <option value="scholarly">文雅清逸</option>
+            </select>
+
+            <button class="generate-btn" onclick="generatePrompt()">生成 Prompt</button>
+        </div>
+
+        <div class="section">
+            <label>生成结果：</label>
+            <div id="result"></div>
+            <button class="copy-btn" onclick="copyPrompt()">复制 Prompt</button>
+        </div>
+    </div>
+
+    <script>
+        const poseDetails = {
+            standing: "elegant standing pose with graceful posture",
+            sitting: "seated elegantly with perfect poise",
+            dancing: "graceful dancing pose with flowing movements",
+            kneeling: "traditional kneeling position with dignified bearing"
+        };
+
+        const actionDetails = {
+            contemplative: "in deep contemplation",
+            playing_instrument: "playing a traditional Chinese instrument",
+            pouring_tea: "performing tea ceremony with refined movements",
+            holding_fan: "holding an ornate fan with delicate grace",
+            writing: "engaged in calligraphy with focused expression"
+        };
+
+        const clothingDetails = {
+            hanfu: "wearing flowing traditional Hanfu robes",
+            imperial: "dressed in imperial court attire",
+            scholar: "in scholarly robes with elegant draping"
+        };
+
+        const atmosphereDetails = {
+            elegant: "radiating classical elegance",
+            ethereal: "with ethereal and dreamlike quality",
+            scholarly: "embodying scholarly refinement"
+        };
+
+        function generatePrompt() {
+            const pose = document.getElementById('pose').value;
+            const action = document.getElementById('action').value;
+            const clothing = document.getElementById('clothing').value;
+            const atmosphere = document.getElementById('atmosphere').value;
+
+            const basePrompt = "Fine art porcelain figurine of a Chinese classical beauty";
+            const details = [
+                poseDetails[pose],
+                actionDetails[action],
+                clothingDetails[clothing],
+                atmosphereDetails[atmosphere],
+                "decorated with blue and white ceramic patterns",
+                "traditional hairstyle with ornate pins",
+                "Ming dynasty style florals and cloud motifs",
+                "pristine glaze finish",
+                "dramatic studio lighting",
+                "professional photography",
+                "hyper-detailed"
+            ];
+
+            const fullPrompt = `${basePrompt}, ${details.join(", ")}`;
+            document.getElementById('result').textContent = fullPrompt;
+        }
+
+        function copyPrompt() {
+            const prompt = document.getElementById('result').textContent;
+            navigator.clipboard.writeText(prompt).then(() => {
+                alert("Prompt已复制到剪贴板！");
+            });
+        }
+    </script>
+
+
+</body></html>
